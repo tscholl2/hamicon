@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+)
 
 /*
 <g id="mouth" style="stroke:#000;stroke-width:4;stroke-linecap:round;fill-opacity:0;">
@@ -14,10 +17,10 @@ type mouth struct {
 	style string // ""
 }
 
-func newMouth() (m mouth) {
-	m.angle = randint(0, 90)
-	m.width = randint(-10, 10)
-	if randint(0, 4) == 0 {
+func newMouth(r *rand.Rand) (m mouth) {
+	m.angle = randint(r, 0, 90)
+	m.width = randint(r, -10, 10)
+	if randint(r, 0, 4) == 0 {
 		m.frown = 1
 	}
 	m.style = "stroke:#000;stroke-width:4;stroke-linecap:round;fill-opacity:0;"

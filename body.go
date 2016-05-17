@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+)
 
 /*
 <ellipse id="body" cx="50" cy="50" rx="45" ry="30" style="fill:#fff;fill-opacity:1;stroke:#000;stroke-width:2;"/>
@@ -12,10 +15,10 @@ type body struct {
 	color string // "#fff"
 }
 
-func newBody() (b body) {
-	b.rx = randint(-5, 5)
-	b.ry = randint(-5, 5)
-	b.color = randcolor()
+func newBody(r *rand.Rand) (b body) {
+	b.rx = randint(r, -5, 5)
+	b.ry = randint(r, -5, 5)
+	b.color = randcolor(r)
 	b.style = "fill:" + b.color + ";fill-opacity:1;stroke:#000;stroke-width:2;"
 	return
 }

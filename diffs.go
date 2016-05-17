@@ -1,17 +1,21 @@
 package main
 
+import "math/rand"
+
 type diffs struct {
+	rand  *rand.Rand
 	body  body
 	mouth mouth
 	eyes  eyes
 	legs  legs
 }
 
-func newDiffs() (d diffs) {
-	d.body = newBody()
-	d.mouth = newMouth()
-	d.eyes = newEyes()
-	d.legs = newLegs()
+func newDiffs(r *rand.Rand) (d diffs) {
+	d.rand = r
+	d.body = newBody(d.rand)
+	d.mouth = newMouth(d.rand)
+	d.eyes = newEyes(d.rand)
+	d.legs = newLegs(d.rand)
 	return
 }
 

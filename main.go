@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"net/http"
 	"text/template"
 )
@@ -13,7 +14,8 @@ var (
 )
 
 func get(w http.ResponseWriter, r *http.Request) {
-	tmpl.Execute(w, newDiffs().toMap())
+	rnd := rand.New(rand.NewSource(rand.Int63()))
+	tmpl.Execute(w, newDiffs(rnd).toMap())
 }
 
 func headers(h http.Handler) http.Handler {

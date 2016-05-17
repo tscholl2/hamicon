@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+)
 
 /*
 <g id="eyes" style="stroke:#000;stroke-width:2;fill:#fff;">
@@ -17,12 +20,12 @@ type eyes struct {
 	style string // ""
 }
 
-func newEyes() (e eyes) {
-	e.r1 = randint(0, 2)
-	e.h1 = randint(-1, 1)
-	e.r2 = randint(0, 2)
-	e.h2 = randint(-1, 1)
-	e.w = randint(-2, 2)
+func newEyes(r *rand.Rand) (e eyes) {
+	e.r1 = randint(r, 0, 2)
+	e.h1 = randint(r, -1, 1)
+	e.r2 = randint(r, 0, 2)
+	e.h2 = randint(r, -1, 1)
+	e.w = randint(r, -2, 2)
 	e.style = "stroke:#000;stroke-width:2;fill:#fff;"
 	return
 }

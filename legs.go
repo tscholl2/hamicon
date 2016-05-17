@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+)
 
 /*
 <g id="legs" style="stroke:#000;stroke-width:2;stroke-linecap:round;">
@@ -15,8 +18,8 @@ type legs struct {
 	style  string // ""
 }
 
-func newLegs() (l legs) {
-	l.length = randint(-2, 5)
+func newLegs(r *rand.Rand) (l legs) {
+	l.length = randint(r, -2, 5)
 	l.style = "stroke:#000;stroke-width:2;stroke-linecap:round;"
 	return
 }
