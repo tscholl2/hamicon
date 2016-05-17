@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"text/template"
 )
@@ -24,5 +25,6 @@ func headers(h http.Handler) http.Handler {
 
 func main() {
 	http.HandleFunc("/", get)
+	fmt.Println("listening on :8080")
 	http.ListenAndServe(":8080", headers(http.DefaultServeMux))
 }
