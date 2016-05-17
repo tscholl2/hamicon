@@ -2,14 +2,18 @@ package main
 
 import "fmt"
 
-// <circle id="eye1" r="3" cy="35" cx="60"/>
-// <circle id="eye2" r="3" cy="35" cx="70"/>
+/*
+<g id="eyes" style="stroke:#000;stroke-width:2;fill:#fff;">
+	<circle id="eye1" r="3" cy="35" cx="60"/>
+	<circle id="eye2" r="3" cy="35" cx="70"/>
+</g>
+*/
 type eyes struct {
-	r1    int    // [-1,3]
-	h1    int    // [-1,1]
-	r2    int    // [-1,3]
-	h2    int    // [-1,1]
-	w     int    // [0,1]
+	r1    int    // 3 [2,6]
+	h1    int    // 35 [34,36]
+	r2    int    // 3 [2,6]
+	h2    int    // 35 [34,36]
+	w     int    // 4 [2,6]
 	style string // ""
 }
 
@@ -19,7 +23,7 @@ func newEyes() (e eyes) {
 	e.r2 = randint(0, 2)
 	e.h2 = randint(-1, 1)
 	e.w = randint(-2, 2)
-	e.style = "stroke:#000;stroke-width:2;fill-opacity:0;"
+	e.style = "stroke:#000;stroke-width:2;fill:#fff;"
 	return
 }
 
