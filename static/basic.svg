@@ -1,4 +1,4 @@
-<svg width="100" height="100" preserveAspectRatio="xMidYMid meet">
+<svg width="100" height="100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
  <g id="icon">
   <g id="legs" stroke="#000" stroke-width="3" stroke-linecap="round">
     <path id="bleg1" d="M30,75 l0,10" transform="rotate(15,30,75)"/>
@@ -13,8 +13,8 @@
     <circle id="eye1" r="3" cy="35" cx="60"/>
     <circle id="eye2" r="3" cy="35" cx="70"/>
   </g>
-  <g id="mouth">
-  <path id="lip" stroke-linecap="round" stroke="#000" stroke-width="4" fill-opacity="0" fill="#000" d="M50,50 a 30,60 180 0,0 30,0"/>
+  <g id="mouth" stroke-linecap="round" stroke="#000" stroke-width="4" fill-opacity="0" fill="#000">
+  <path id="lip" d="M50,50 a 30,60 180 0,0 30,0"/>
   </g>
  </g>
 </svg>
