@@ -1,4 +1,34 @@
 <svg width="100" height="100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+<style type="text/css" >
+<![CDATA[
+@keyframes wiggle1 {
+  0% {transform: rotate(0deg)}
+  50% {transform: rotate(20deg)}
+  100% {transform: rotate(0deg)}
+}
+@keyframes wiggle2 {
+  0% {transform: rotate(0deg)}
+  50% {transform: rotate(-20deg)}
+  100% {transform: rotate(0deg)}
+}
+#bleg1 {
+  transform-origin: center right;
+  animation: wiggle1 1s ease infinite;
+}
+#bleg2 {
+  transform-origin: center left;
+  animation: wiggle1 1s ease infinite;
+}
+#fleg1 {
+  transform-origin: center left;
+  animation: wiggle2 1s ease infinite;
+}
+#fleg2 {
+  transform-origin: center right;
+  animation: wiggle2 1s ease infinite;
+}
+]]>
+</style>
  <g id="icon">
   {{.Legs}}{{/*
   <g id="legs" stroke="#000" stroke-width="3" stroke-linecap="round">
