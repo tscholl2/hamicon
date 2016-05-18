@@ -1,31 +1,41 @@
 <svg width="100" height="100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
 <style type="text/css" >
 <![CDATA[
-@keyframes wiggle1 {
-  0% {transform: rotate(0deg)}
-  50% {transform: rotate(20deg)}
-  100% {transform: rotate(0deg)}
+@keyframes blink {
+  50% {ry:0.1}
 }
-@keyframes wiggle2 {
-  0% {transform: rotate(0deg)}
-  50% {transform: rotate(-20deg)}
-  100% {transform: rotate(0deg)}
+.blink {
+  animation: blink 2s infinite;
+}
+@keyframes shrink-v {
+  50% {transform:scaleY(0.1)}
+}
+.shrink-v {
+  animation: shrink-v 0.5s infinite;
+}
+#mouth {
+  transform-origin: center top;
+}
+@keyframes walk {
+  0% {transform: rotate(-10deg)}
+  50% {transform: rotate(20deg)}
+  100% {transform: rotate(-10deg)}
 }
 #bleg1 {
   transform-origin: center right;
-  animation: wiggle1 1s ease infinite;
+  animation: walk 1s ease 0.25s infinite reverse;
 }
 #bleg2 {
   transform-origin: center left;
-  animation: wiggle1 1s ease infinite;
+  animation: walk 1s ease infinite;
 }
 #fleg1 {
   transform-origin: center left;
-  animation: wiggle2 1s ease infinite;
+  animation: walk 1s ease 0.4s infinite reverse;
 }
 #fleg2 {
   transform-origin: center right;
-  animation: wiggle2 1s ease infinite;
+  animation: walk 1s ease 0.7s infinite;
 }
 ]]>
 </style>
@@ -43,8 +53,8 @@
   */}}
   {{.Eyes}}{{/*
   <g id="eyes" style="stroke:#000;stroke-width:2;fill:#fff;">
-    <circle id="eye1" r="3" cy="35" cx="60"/>
-    <circle id="eye2" r="3" cy="35" cx="70"/>
+    <ellipse id="eye1" rx="3" ry="3" cy="35" cx="60"/>
+    <ellipse id="eye2" rx="3" ry="3" cy="35" cx="70"/>
   </g>
   */}}
   {{.Mouth}}{{/*
