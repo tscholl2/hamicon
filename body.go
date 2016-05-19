@@ -11,7 +11,6 @@ import (
 type body struct {
 	rx    int    // 45 [42,45]
 	ry    int    // 30 [25,35]
-	style string // ""
 	color string // "#fff"
 }
 
@@ -19,7 +18,6 @@ func newBody(r *rand.Rand) (b body) {
 	b.rx = randint(r, -3, 0)
 	b.ry = randint(r, -5, 5)
 	b.color = randcolor(r)
-	b.style = "fill:" + b.color + ";fill-opacity:1;stroke:#000;stroke-width:2;"
 	return
 }
 
@@ -28,6 +26,10 @@ func bodyToSVG(d diffs) string {
 	ry := 30 + d.body.ry
 	cx := 50
 	cy := 50
-	return fmt.Sprintf(`<ellipse id="body" cx="%d" cy="%d" rx="%d" ry="%d" style="%s"/>`,
-		cx, cy, rx, ry, d.body.style)
+	c := d.body.color
+	if c == "" {
+		c = "#fff"
+	}
+	return fmt.Sprintf(`<ellipse id="body" cx="%d" cy="%d" rx="%d" ry="%d" style="fill-opacity:1;stroke:#000;stroke-width:2;fill:%s;"/>`,
+		cx, cy, rx, ry, c)
 }

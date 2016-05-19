@@ -11,11 +11,10 @@ import (
 </g>
 */
 type mouth struct {
-	angle int    // 0 [0,90] 0=flat, 90=circluar
-	width int    // 30 [20,40]
-	frown int    // 0 [0,1]
-	fill  bool   // false
-	style string // ""
+	angle int  // 0 [0,90] 0=flat, 90=circluar
+	width int  // 30 [20,40]
+	frown int  // 0 [0,1]
+	fill  bool // false
 }
 
 func newMouth(r *rand.Rand) (m mouth) {
@@ -27,7 +26,6 @@ func newMouth(r *rand.Rand) (m mouth) {
 	if randint(r, 0, 4) == 0 {
 		m.fill = true
 	}
-	m.style = "stroke:#000;stroke-width:4;stroke-linecap:round;fill-opacity:0;"
 	return
 }
 
@@ -45,7 +43,7 @@ func mouthToSVG(d diffs) (svg string) {
 		z = "Z"
 		s = `fill="#fff" stroke-width="2" fill-opacity="1"`
 	}
-	svg += `<g class="shrink-v" id="mouth" style="` + d.mouth.style + `">`
+	svg += `<g class="shrink-v" id="mouth" style="stroke:#000;stroke-width:4;stroke-linecap:round;fill-opacity:0;">`
 	svg += fmt.Sprintf(`<path id="lip" d="M%d,%d a %d,60 %d 0,%d %d,0%s" %s/>`, x, y, w, a, f, w, z, s)
 	svg += `</g>`
 	return
