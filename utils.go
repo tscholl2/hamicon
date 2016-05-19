@@ -16,3 +16,14 @@ func randcolor(rnd *rand.Rand) string {
 	b := strconv.FormatInt(int64(randint(rnd, 0, 15)), 16)
 	return "#" + r + g + b
 }
+
+func max(a, b int) int {
+	if a >= b {
+		return a
+	}
+	return b
+}
+
+func min(a, b int) int {
+	return -max(-a, -b)
+}

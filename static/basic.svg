@@ -1,6 +1,6 @@
 
-<svg width="100" height="100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
- <g id="icon">
+<svg width="300" height="300" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <g id="icon" transform="scale(3)">
   <g id="legs" style="stroke:#000;stroke-width:2;stroke-linecap:round;">
     <path id="bleg1" d="M30,75 l0,10" transform="rotate(15,30,75)"/>
     <path id="bleg2" d="M35,75 l0,10" transform="rotate(-15,35,75)"/>
@@ -8,16 +8,16 @@
     <path id="fleg2" d="M70,75 l0,10" transform="rotate(-15,70,75)"/>
   </g>
     <ellipse id="body" cx="50" cy="50" rx="45" ry="30" style="fill-opacity:1;stroke:#000;stroke-width:2;fill:#fff;"/>
-  <g id="eyes" style="stroke:#000;stroke-width:2;fill:#fff;">
-    <g id="glasses" style="stroke:#000;stroke-width:1">
+  <g id="eyes" style="stroke:#000;stroke-width:1;fill:#fff;">
+    <g id="glasses" style="stroke:#000;stroke-width:2">
       <circle cx="55" cy="35" r="8"/>
       <circle cx="75" cy="35" r="8"/>
       <path d="M63,35 l4,0"/>
-      <path d="M47,35 l-10,0"/>
-      <path d="M83,35 l10,0"/>
+      <path d="M47,35 l-10,0" transform="rotate(15,47,35)"/>
+      <path d="M83,35 l10,0" transform="rotate(-15,83,35)"/>
     </g>
-    <ellipse class="blink" id="eye1" cx="60" cy="35" rx="3" ry="3"/>
-    <ellipse class="blink" id="eye2" cx="70" cy="35" rx="3" ry="3"/>
+    <ellipse class="blink" id="eye1" cx="55" cy="35" rx="3" ry="3"/>
+    <ellipse class="blink" id="eye2" cx="75" cy="35" rx="3" ry="3"/>
   </g>
   <g class="shrink-v" id="mouth" style="stroke:#000;stroke-width:4;stroke-linecap:round;fill-opacity:0;">
     <path id="lip" d="M50,50 a 30,60 0 0,0 30,0" />
