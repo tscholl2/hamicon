@@ -24,20 +24,28 @@
 #legs > path {
   transform-origin: 0% 0%;
 }
+#bleg1 {
+  transform: rotate(10deg);
+}
 #legs.walk #bleg1 {
-  transform: rotate(20deg);
   animation: walk 1s ease infinite reverse;
 }
-#legs.walk #bleg2 {
+#bleg2 {
   rotate(-10deg);
+}
+#legs.walk #bleg2 {
   animation: walk 1s ease 0.35s infinite;
 }
-#legs.walk #fleg1 {
+#fleg1 {
   rotate(10deg);
+}
+#legs.walk #fleg1 {
   animation: walk 1s ease 0.3s infinite reverse;
 }
-#legs.walk #fleg2 {
+#fleg2 {
   rotate(-10deg);
+}
+#legs.walk #fleg2 {
   animation: walk 1s ease 0.65s infinite;
 }
 ]]>
