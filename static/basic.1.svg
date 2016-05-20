@@ -21,21 +21,20 @@
   50% {transform: rotate(20deg)}
   100% {transform: rotate(-10deg)}
 }
+.leg {
+  transform-origin: 0% 0%;
+}
 #bleg1 {
-  transform-origin: center right;
-  animation: walk 1s ease 0.25s infinite reverse;
+  animation: walk 1s ease infinite reverse;
 }
 #bleg2 {
-  transform-origin: center left;
-  animation: walk 1s ease infinite;
+  animation: walk 1s ease 0.35s infinite;
 }
 #fleg1 {
-  transform-origin: center left;
-  animation: walk 1s ease 0.4s infinite reverse;
+  animation: walk 1s ease 0.3s infinite reverse;
 }
 #fleg2 {
-  transform-origin: center right;
-  animation: walk 1s ease 0.7s infinite;
+  animation: walk 1s ease 0.65s infinite;
 }
 ]]>
 </style>

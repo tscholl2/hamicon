@@ -1,17 +1,56 @@
 
 <svg width="300" height="300" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+<style type="text/css" >
+<![CDATA[
+@keyframes blink {
+  50% {ry:0.1}
+}
+.blink {
+  animation: blink 2s infinite;
+}
+@keyframes shrink-v {
+  50% {transform:scaleY(0.1)}
+}
+.shrink-v {
+  animation: shrink-v 0.5s infinite;
+}
+#mouth {
+  transform-origin: center top;
+}
+@keyframes walk {
+  0% {transform: rotate(-10deg)}
+  50% {transform: rotate(20deg)}
+  100% {transform: rotate(-10deg)}
+}
+.leg {
+  transform-origin: 0% 0%;
+}
+#bleg1 {
+  animation: walk 1s ease infinite reverse;
+}
+#bleg2 {
+  animation: walk 1s ease 0.35s infinite;
+}
+#fleg1 {
+  animation: walk 1s ease 0.4s infinite reverse;
+}
+#fleg2 {
+  animation: walk 1s ease 0.7s infinite;
+}
+]]>
+</style>
  <g id="icon" transform="scale(3)">
   <g id="legs" style="stroke:#000;stroke-width:2;stroke-linecap:round;">
-    <path id="bleg1" d="M30,75 l0,10" transform="rotate(15,30,75)"/>
-    <path id="bleg2" d="M35,75 l0,10" transform="rotate(-15,35,75)"/>
-    <path id="fleg1" d="M65,75 l0,10" transform="rotate(15,65,75)"/>
-    <path id="fleg2" d="M70,75 l0,10" transform="rotate(-15,70,75)"/>
+    <path id="bleg1" class="leg" d="M30,75 l0,10"/>
+    <path id="bleg2" class="leg" d="M35,75 l0,10" transform="rotate(-15,35,75)"/>
+    <path id="fleg1" class="leg" d="M65,75 l0,10" transform="rotate(15,65,75)"/>
+    <path id="fleg2" class="leg" d="M70,75 l0,10" transform="rotate(-15,70,75)"/>
   </g>
-    <ellipse id="body" cx="50" cy="50" rx="45" ry="30" style="fill-opacity:1;stroke:#000;stroke-width:2;fill:#fff;"/>
-  <g id="eyes" style="stroke:#000;stroke-width:1;fill:#fff;">
+  <!--ellipse id="body" cx="50" cy="50" rx="45" ry="30" style="fill-opacity:1;stroke:#000;stroke-width:2;fill:#fff;"/-->
+  <!--g id="eyes" style="stroke:#000;stroke-width:1;fill:#fff;">
     <g id="glasses" style="stroke:#000;stroke-width:2">
       <!--circle cx="55" cy="35" r="8"/>
-      <circle cx="75" cy="35" r="8"/-->
+      <circle cx="75" cy="35" r="8"/>
       <path d="M47,27 l0,16 l16,0 l0,-16 Z"/>
       <path d="M67,27 l0,16 l16,0 l0,-16 Z"/>
       <path d="M63,35 l4,0"/>
@@ -23,6 +62,6 @@
   </g>
   <g class="shrink-v" id="mouth" style="stroke:#000;stroke-width:4;stroke-linecap:round;fill-opacity:0;">
     <path id="lip" d="M50,50 a 30,60 0 0,0 30,0" />
-  </g>
+  </g-->
  </g>
 </svg>

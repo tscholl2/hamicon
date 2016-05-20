@@ -5,14 +5,6 @@ import (
 	"math/rand"
 )
 
-/*
-<g id="legs" style="stroke:#000;stroke-width:2;stroke-linecap:round;">
-  <path id="bleg1" d="M30,75 l0,10" transform="rotate(15,30,75)"/>
-  <path id="bleg2" d="M35,75 l0,10" transform="rotate(-15,35,75)"/>
-  <path id="fleg1" d="M65,75 l0,10" transform="rotate(15,65,75)"/>
-  <path id="fleg2" d="M70,75 l0,10" transform="rotate(-15,70,75)"/>
-</g>
-*/
 type legs struct {
 	length int // 10 [8,15]
 }
@@ -32,10 +24,10 @@ func legsToSVG(d diffs) (svg string) {
 		y -= 3
 	}
 	svg += `<g id="legs" style="stroke:#000;stroke-width:2;stroke-linecap:round;">`
-	svg += fmt.Sprintf(`<path id="bleg1" d="M30,%d l0,%d" transform="rotate(15,30,75)"/>`, y, l)
-	svg += fmt.Sprintf(`<path id="bleg2" d="M35,%d l0,%d" transform="rotate(-15,35,75)"/>`, y, l)
-	svg += fmt.Sprintf(`<path id="fleg1" d="M65,%d l0,%d" transform="rotate(15,65,75)"/>`, y, l)
-	svg += fmt.Sprintf(`<path id="fleg2" d="M70,%d l0,%d" transform="rotate(-15,70,75)"/>`, y, l)
+	svg += fmt.Sprintf(`<path id="bleg1" class="leg" d="M30,%d l0,%d" transform="rotate(15,30,75)"/>`, y, l)
+	svg += fmt.Sprintf(`<path id="bleg2" class="leg" d="M35,%d l0,%d" transform="rotate(-15,35,75)"/>`, y, l)
+	svg += fmt.Sprintf(`<path id="fleg1" class="leg" d="M65,%d l0,%d" transform="rotate(15,65,75)"/>`, y, l)
+	svg += fmt.Sprintf(`<path id="fleg2" class="leg" d="M70,%d l0,%d" transform="rotate(-15,70,75)"/>`, y, l)
 	svg += `</g>`
 	return
 }
