@@ -21,7 +21,7 @@ func newBody(r *rand.Rand) (b body) {
 	return
 }
 
-func bodyToSVG(d diffs) string {
+func bodyToSVG(d diffs) (svg string) {
 	rx := 45 + d.body.rx
 	ry := 30 + d.body.ry
 	cx := 50
@@ -30,6 +30,8 @@ func bodyToSVG(d diffs) string {
 	if c == "" {
 		c = "#fff"
 	}
-	return fmt.Sprintf(`<ellipse id="body" cx="%d" cy="%d" rx="%d" ry="%d" style="fill-opacity:1;stroke:#000;stroke-width:2;fill:%s;"/>`,
-		cx, cy, rx, ry, c)
+	svg += fmt.Sprintf(`<g style="fill-opacity:1;stroke:#000;stroke-width:2;fill:%s;">`, c)
+	svg += fmt.Sprintf(`<ellipse id="body" cx="%d" cy="%d" rx="%d" ry="%d" />`, cx, cy, rx, ry)
+	svg += `</g>`
+	return
 }
