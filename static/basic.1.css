@@ -1,0 +1,59 @@
+@keyframes blink {
+  50% {ry:0.1}
+}
+.blink {
+  animation: blink 2s infinite;
+}
+@keyframes shrink-v {
+  50% {transform:scaleY(0.1)}
+}
+.talk {
+  animation: shrink-v 0.5s infinite;
+}
+#nose {
+  transform-origin: center bottom;
+}
+@keyframes wiggle {
+  0% {transform: rotate(0deg)}
+  25% {transform: rotate(10deg)}
+  75% {transform: rotate(-10deg)}
+  100% {transform: rotate(0deg)}
+}
+.wiggle {
+  animation: wiggle 1s linear infinite;
+}
+#mouth {
+  transform-origin: center top;
+}
+@keyframes walk {
+  0% {transform: rotate(-10deg)}
+  50% {transform: rotate(20deg)}
+  100% {transform: rotate(-10deg)}
+}
+#legs > path {
+  transform-origin: 0% 0%;
+}
+#bleg1 {
+  transform: rotate(10deg);
+}
+#legs.walk #bleg1 {
+  animation: walk 1s ease infinite reverse;
+}
+#bleg2 {
+  transform: rotate(-10deg);
+}
+#legs.walk #bleg2 {
+  animation: walk 1s ease 0.35s infinite;
+}
+#fleg1 {
+  transform: rotate(10deg);
+}
+#legs.walk #fleg1 {
+  animation: walk 1s ease 0.3s infinite reverse;
+}
+#fleg2 {
+  transform: rotate(-10deg);
+}
+#legs.walk #fleg2 {
+  animation: walk 1s ease 0.65s infinite;
+}
