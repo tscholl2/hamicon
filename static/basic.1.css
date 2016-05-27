@@ -6,16 +6,20 @@
 .blink {
   animation: blink 2s infinite;
 }
-@keyframes shrink-v {
+@keyframes scaler {
+  30% {
+    transform: scale(0.4)
+  }
   50% {
-    transform: scaleY(0.1)
+    transform: scale(0.7)
+  }
+  70% {
+    transform: scale(0.5)
   }
 }
 .talk {
-  animation: shrink-v 0.5s infinite;
-}
-#nose {
-  transform-origin: center bottom;
+  transform-origin: 50% 50%;
+  animation: scaler 1s infinite alternate;
 }
 @keyframes wiggle {
   0% {
@@ -32,10 +36,8 @@
   }
 }
 .wiggle {
+  transform-origin: center bottom;
   animation: wiggle 1s linear infinite;
-}
-#mouth {
-  transform-origin: center top;
 }
 @keyframes walk {
   0% {

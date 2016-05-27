@@ -31,7 +31,7 @@ func bodyToSVG(d diffs) (svg string) {
 		c = "#fff"
 	}
 	svg += fmt.Sprintf(`<g style="fill-opacity:1;stroke:#000;stroke-width:2;fill:%s;">`, c)
-	svg += fmt.Sprintf(`<ellipse id="body" cx="%d" cy="%d" rx="%d" ry="%d" />`, cx, cy, rx, ry)
+	svg += fmt.Sprintf(`<ellipse id="body" cx="%d" cy="%d" rx="%d" ry="%d"/>`, cx, cy, rx, ry)
 	svg += `</g>`
 	return
 }
