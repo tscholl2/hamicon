@@ -2,6 +2,7 @@
 <svg width="100" height="100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
 <style type="text/css" >
 <![CDATA[
+/* eyes */
 @keyframes blink {
   50% {
     ry: 0.1
@@ -10,6 +11,7 @@
 .blink {
   animation: blink 2s infinite;
 }
+/* mouth */
 @keyframes scaler {
   30% {
     transform: scale(0.4)
@@ -22,9 +24,24 @@
   }
 }
 .talk {
-  transform-origin: 50% 50%;
   animation: scaler 1s infinite alternate;
 }
+#speaker {
+  transform-origin: 50% 50%;
+}
+/* cheeks */
+.swell {
+  animation: scaler 3s infinite;
+}
+#cheek1 {
+  transition: all 0.2s;
+  transform-origin: right center;
+}
+#cheek2 {
+  transition: all 0.2s;
+  transform-origin: left center;
+}
+/* nose */
 @keyframes wiggle {
   0% {
     transform: rotate(0deg)
@@ -40,9 +57,12 @@
   }
 }
 .wiggle {
-  transform-origin: center bottom;
   animation: wiggle 1s linear infinite;
 }
+#nose {
+  transform-origin: center bottom;
+}
+/* legs */
 @keyframes walk {
   0% {
     transform: rotate(-10deg)
@@ -90,7 +110,7 @@
     <path id="fleg2" d="M70,75 l0,10" transform="rotate(-15,70,75)"/>
   </g>
   <g style="fill-opacity:1;stroke:#000;stroke-width:2;fill:#fff;">
-  <ellipse id="body" cx="50" cy="50" rx="45" ry="30"/>
+    <ellipse id="body" cx="50" cy="50" rx="45" ry="30"/>
   </g>
   <g id="eyes" style="stroke:#000;stroke-width:2;fill:#fff;">
     <ellipse class="blink" id="eye1" cx="60" cy="35" rx="3" ry="3"/>
@@ -99,9 +119,10 @@
   <g id="nose" class="wiggle" style="stroke:#000;stroke-width:1;fill:pink;">
     <path d="M65,50 l-2,-5 l5,0 Z"/>
   </g>
-  <g id="mouth" style="stroke:#000;stroke-width:1;fill-opacity:0;">
-    <path id="lip1" d="M65,50 a6,5 0 0,1 -10,0"/>
+  <g id="mouth" style="stroke:#000;stroke-width:1;fill-opacity:0;"><path id="lip1" d="M65,50 a6,5 0 0,1 -10,0"/>
     <path id="lip2" d="M65,50 a6,5 0 0,0 10,0"/>
+    <path id="cheek1" class="swell" d="M50,45 a5,5 180 0 1 0,10"/>
+    <path id="cheek2" class="swell" d="M80,45 a5,5 180 0 0 0,10"/>
     <ellipse id="speaker" class="talk" cx="65" cy="54" rx="5" ry="3" style="fill:#000;fill-opacity:1;"/>
   </g>
 </g>

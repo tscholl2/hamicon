@@ -1,3 +1,4 @@
+/* eyes */
 @keyframes blink {
   50% {
     ry: 0.1
@@ -6,6 +7,7 @@
 .blink {
   animation: blink 2s infinite;
 }
+/* mouth */
 @keyframes scaler {
   30% {
     transform: scale(0.4)
@@ -18,9 +20,24 @@
   }
 }
 .talk {
-  transform-origin: 50% 50%;
   animation: scaler 1s infinite alternate;
 }
+#speaker {
+  transform-origin: 50% 50%;
+}
+/* cheeks */
+.swell {
+  animation: scaler 3s infinite;
+}
+#cheek1 {
+  transition: all 0.2s;
+  transform-origin: right center;
+}
+#cheek2 {
+  transition: all 0.2s;
+  transform-origin: left center;
+}
+/* nose */
 @keyframes wiggle {
   0% {
     transform: rotate(0deg)
@@ -36,9 +53,12 @@
   }
 }
 .wiggle {
-  transform-origin: center bottom;
   animation: wiggle 1s linear infinite;
 }
+#nose {
+  transform-origin: center bottom;
+}
+/* legs */
 @keyframes walk {
   0% {
     transform: rotate(-10deg)
