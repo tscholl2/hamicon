@@ -53,27 +53,31 @@ type path struct {
 
 // path directions
 
-func (p *path) moveAbs(x, y int) *path {
+func (p path) moveAbs(x, y int) path {
 	p.D += fmt.Sprintf("M%d,%d", x, y)
 	return p
 }
-func (p *path) line(x, y int) *path {
+func (p path) line(x, y int) path {
 	p.D += fmt.Sprintf("l%d,%d", x, y)
 	return p
 }
-func (p *path) lineAbs(x, y int) *path {
+func (p path) lineAbs(x, y int) path {
 	p.D += fmt.Sprintf("L%d,%d", x, y)
 	return p
 }
-func (p *path) arc(rx, ry, xAxisRotate, largeArcFlag, sweepFlag, x, y int) *path {
+func (p path) vert(y int) path {
+	p.D += fmt.Sprintf("v%d", y)
+	return p
+}
+func (p path) arc(rx, ry, xAxisRotate, largeArcFlag, sweepFlag, x, y int) path {
 	p.D += fmt.Sprintf("a%d,%d %d %d,%d %d,%d", rx, ry, xAxisRotate, largeArcFlag, sweepFlag, x, y)
 	return p
 }
-func (p *path) arcAbs(rx, ry, xAxisRotate, largeArcFlag, sweepFlag, x, y int) *path {
+func (p path) arcAbs(rx, ry, xAxisRotate, largeArcFlag, sweepFlag, x, y int) path {
 	p.D += fmt.Sprintf("A%d,%d %d %d,%d %d,%d", rx, ry, xAxisRotate, largeArcFlag, sweepFlag, x, y)
 	return p
 }
-func (p *path) close() *path {
+func (p path) close() path {
 	p.D += "z"
 	return p
 }

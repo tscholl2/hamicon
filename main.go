@@ -1,9 +1,11 @@
 package main
 
 import (
+	"encoding/xml"
 	"fmt"
 	"math/rand"
 	"net/http"
+	"os"
 	"text/template"
 )
 
@@ -30,8 +32,16 @@ func headers(h http.Handler) http.Handler {
 }
 
 func main() {
-	http.HandleFunc("/", get)
-	http.HandleFunc("/blank", blank)
-	fmt.Println("listening on :8080")
-	http.ListenAndServe(":8080", headers(http.DefaultServeMux))
+	enc := xml.NewEncoder(os.Stdout)
+	enc.Indent("  ", "  ")
+	v := newIcon(options{})
+	if err := enc.Encode(v); err != nil {
+		fmt.Printf("error: %v\n", err)
+	}
+	/*
+		http.HandleFunc("/", get)
+		http.HandleFunc("/blank", blank)
+		fmt.Println("listening on :8080")
+		http.ListenAndServe(":8080", headers(http.DefaultServeMux))
+	*/
 }
