@@ -45,72 +45,35 @@ type ellipse struct {
 
 // paths
 
-type pathDirection struct {
-	Moves []interface {
-		String() string
-	}
-}
-
-func (d pathDirection) MarshalXMLAttr(name xml.Name) (a xml.Attr, e error) {
-	a.Name = name
-	var D string
-	for _, m := range d.Moves {
-		D += " " + m.String()
-	}
-	a.Value = D
-	return
-}
-
 type path struct {
 	svg
-	XMLName xml.Name      `xml:"ellipse"`
-	D       pathDirection `xml:"d,attr"`
+	XMLName xml.Name `xml:"path"`
+	D       string   `xml:"d,attr"`
 }
 
 // path directions
 
-type movePath struct {
-	absolute bool
-	x, y     int
+func (p *path) moveAbs(x, y int) *path {
+	p.D += fmt.Sprintf("M%d,%d", x, y)
+	return p
 }
-
-func (m movePath) String() string {
-	M := "m"
-	if m.absolute {
-		M = "M"
-	}
-	return fmt.Sprintf("%s%d,%d", M, m.x, m.y)
+func (p *path) line(x, y int) *path {
+	p.D += fmt.Sprintf("l%d,%d", x, y)
+	return p
 }
-
-type linePath struct {
-	absolute bool
-	x, y     int
+func (p *path) lineAbs(x, y int) *path {
+	p.D += fmt.Sprintf("L%d,%d", x, y)
+	return p
 }
-
-func (l linePath) String() string {
-	L := "l"
-	if l.absolute {
-		L = "L"
-	}
-	return fmt.Sprintf("%s%d,%d", L, l.x, l.y)
+func (p *path) arc(rx, ry, xAxisRotate, largeArcFlag, sweepFlag, x, y int) *path {
+	p.D += fmt.Sprintf("a%d,%d %d %d,%d %d,%d", rx, ry, xAxisRotate, largeArcFlag, sweepFlag, x, y)
+	return p
 }
-
-type arcPath struct {
-	absolute                                           bool
-	rx, ry, xAxisRotate, largeArcFlag, sweepFlag, x, y int
+func (p *path) arcAbs(rx, ry, xAxisRotate, largeArcFlag, sweepFlag, x, y int) *path {
+	p.D += fmt.Sprintf("A%d,%d %d %d,%d %d,%d", rx, ry, xAxisRotate, largeArcFlag, sweepFlag, x, y)
+	return p
 }
-
-func (a arcPath) String() string {
-	A := "a"
-	if a.absolute {
-		A = "A"
-	}
-	return fmt.Sprintf("%s%d,%d %d %d,%d %d,%d",
-		A, a.rx, a.ry, a.xAxisRotate, a.largeArcFlag, a.sweepFlag, a.x, a.y)
-}
-
-type closePath struct{}
-
-func (z closePath) String() string {
-	return "z"
+func (p *path) close() *path {
+	p.D += "z"
+	return p
 }
