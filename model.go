@@ -38,13 +38,19 @@ type randomizable struct {
 		length, y int
 	}
 	eyes struct {
-		r1 int // 3 [2,6]
-		h1 int // 35 [34,36]
-		r2 int // 3 [2,6]
-		h2 int // 35 [34,36]
-		w  int // 4 [2,6]
+		r1, h1, r2, h2, w int
 	}
 	glasses int // none, round, square
+	nose    struct {
+		length, width int
+	}
+	mouth struct {
+		width int
+	}
+	cheeks struct {
+		radius int
+		inward bool
+	}
 }
 
 func newRandomizable(seed int64) (r randomizable) {
@@ -69,11 +75,16 @@ func newRandomizable(seed int64) (r randomizable) {
 	r.eyes.w = randint(rnd, -2, 2)
 	// glasses options
 	r.glasses = randint(rnd, 0, 2)
+	// nose options
+	r.nose.length = randint(rnd, -1, 1)
+	r.nose.width = randint(rnd, -1, 1)
+	// mouth options
+	r.mouth.width = randint(rnd, -2, 2)
+	// cheek options
+	r.cheeks.radius = randint(rnd, -4, 4)
+	r.cheeks.inward = randint(rnd, 0, 1) == 0
 	// ears options
 
-	// mouth options
-
-	// nose options
 	return
 }
 
@@ -107,6 +118,8 @@ func newIcon(opt options) (h hamicon) {
 	var r randomizable
 	if !opt.blank {
 		r = newRandomizable(opt.seed)
+	} else {
+		r.body.color = "#fff"
 	}
 	Legs :=
 		// TODO prove this stays within the bounds 100x100
@@ -132,18 +145,46 @@ func newIcon(opt options) (h hamicon) {
 		}}
 	Nose :=
 		group{svg: svg{ID: "nose", Class: "wiggle", Style: "stroke:#000;stroke-width:1;fill:pink;"}, Children: []interface{}{
-			path{}.moveAbs(65, 50).line(-2, -5).line(5, 0).close(),
+			path{}.moveAbs(65, 50).line(-(6+r.nose.width)/2, -(5 + r.nose.length)).horiz(6 + 2*(r.nose.width>>1)).close(),
 		}}
 	Mouth :=
 		// TODO split into cheeks and lips and mouth
-		group{svg: svg{ID: "mouth", Style: "stroke:#000;stroke-width:1;fill-opacity:0;"}, Children: []interface{}{
-			path{svg: svg{ID: "lip1"}}.moveAbs(65, 50).arc(6, 5, 0, 0, 1, -10, 0),
-			path{svg: svg{ID: "lip2"}}.moveAbs(65, 50).arc(6, 5, 0, 0, 0, 10, 0),
-			path{svg: svg{ID: "cheek1"}}.moveAbs(45, 45).arc(5, 5, 0, 0, 0, 0, 10),
-			path{svg: svg{ID: "cheek2"}}.moveAbs(82, 45).arc(5, 5, 0, 0, 1, 0, 10),
+		group{svg: svg{ID: "mouth", StrokeWidth: "1", FillOpacity: "0"}, Children: []interface{}{
+			path{svg: svg{ID: "lip1"}}.moveAbs(65, 50).arc(6+r.mouth.width/2, 5+r.mouth.width/2, 0, 0, 1, 10-r.mouth.width, 0),
+			path{svg: svg{ID: "lip2"}}.moveAbs(65, 50).arc(6+r.mouth.width/2, 5+r.mouth.width/2, 0, 0, 0, 10+r.mouth.width, 0),
 			ellipse{svg: svg{ID: "speaker", Class: "talk", Style: "fill:#000;fill-opacity:1;"}, CX: 65, CY: 54, RX: 5, RY: 3},
 		}}
-	h.Icon.Children = []interface{}{Legs, Body, Ears, Eyes, Nose, Mouth}
+	cheekDir := 0
+	if r.cheeks.inward {
+		cheekDir = 1
+	}
+	Cheeks :=
+		/*
+			func mouthToSVG(d diffs) (svg string) {
+				w := mouthDefaults.width + d.mouth.width
+				cr := mouthDefaults.cheekRadius + d.mouth.cheekRadius
+				var cd int
+				if d.mouth.cheekInward {
+					cd = 1
+				}
+				x := noseDefaults.x + d.nose.x
+				y := noseDefaults.y + d.nose.y
+				s := "stroke:#000;stroke-width:1;fill-opacity:0;"
+				svg += fmt.Sprintf(`<g id="mouth" style="%s">`, s)
+				svg += fmt.Sprintf(`<path id="lip1" d="M%d,%d a%d,%d 0 0,1 %d,0"/>`, x, y, w/2+1, w/2, -w)
+				svg += fmt.Sprintf(`<path id="lip2" d="M%d,%d a%d,%d 0 0,0 %d,0"/>`, x, y, w/2+1, w/2, w)
+				svg += fmt.Sprintf(`<path id="cheek1" class="swell" d="M%d,%d a%d,%d 180 0,%d 0,%d"/>`, x-w-cr-2, y-cr, cr, cr, cd, 2*cr)
+				svg += fmt.Sprintf(`<path id="cheek2" class="swell" d="M%d,%d a%d,%d 180 0,%d 0,%d"/>`, x+w+cr+2, y-cr, cr, cr, 1-cd, 2*cr)
+				svg += fmt.Sprintf(`<ellipse id="speaker" class="talk" cx="%d" cy="%d" rx="%d" ry="%d" style="fill:#000;fill-opacity:1;"/>`, x, y+w/2-2+1, w/2, w/2-2)
+				svg += `</g>`
+				return
+			}
+		*/
+		group{svg: svg{ID: "cheeks", StrokeWidth: "1"}, Children: []interface{}{
+			path{svg: svg{ID: "cheek1"}}.moveAbs(65-(5+r.cheeks.radius)-(5+r.mouth.width)-2, 65-(5+r.cheeks.radius)).arc(5+r.cheeks.radius, 5+r.cheeks.radius, 0, 0, cheekDir, 0, 2*(5+r.cheeks.radius)),
+			path{svg: svg{ID: "cheek2"}}.moveAbs(65+(5+r.cheeks.radius)+(5+r.mouth.width)+2, 65-(5+r.cheeks.radius)).arc(5+r.cheeks.radius, 5+r.cheeks.radius, 0, 0, 1-cheekDir, 0, 2*(5+r.cheeks.radius)),
+		}}
+	h.Icon.Children = []interface{}{Legs, Body, Ears, Eyes, Nose, Mouth, Cheeks}
 	// optional attachments
 	if r.glasses > 0 {
 		gr := 5 + max(r.eyes.r1, r.eyes.r2)

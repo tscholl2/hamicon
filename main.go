@@ -4,25 +4,12 @@ import (
 	"bytes"
 	"encoding/xml"
 	"fmt"
-	"math/rand"
 	"net/http"
 	"os"
-	"text/template"
 )
-
-//go:generate embd -n basicSVG static/basic.1.svg
-
-var (
-	tmpl = template.Must(template.New("basic").Parse(basicSVG))
-)
-
-func get(w http.ResponseWriter, r *http.Request) {
-	rnd := rand.New(rand.NewSource(rand.Int63()))
-	tmpl.Execute(w, newDiffs(rnd).toMap())
-}
 
 func blank(w http.ResponseWriter, r *http.Request) {
-	tmpl.Execute(w, diffs{}.toMap())
+	// TODO
 }
 
 func headers(h http.Handler) http.Handler {
@@ -36,7 +23,7 @@ func main() {
 	buf := &bytes.Buffer{}
 	enc := xml.NewEncoder(buf)
 	enc.Indent("", "  ")
-	v := newIcon(options{})
+	v := newIcon(options{seed: 1, blank: true})
 	if err := enc.Encode(v); err != nil {
 		fmt.Printf("error: %v\n", err)
 	}
