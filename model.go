@@ -1,9 +1,13 @@
 package main
 
-import "encoding/xml"
+import (
+	"encoding/xml"
+	"fmt"
+	"math"
+	"math/rand"
+)
 
 /*
-
 <svg width="100" height="100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
 <style type="text/css" >
 <![CDATA[
@@ -13,6 +17,7 @@ import "encoding/xml"
 */
 
 type hamicon struct {
+	svg
 	XMLName             xml.Name    `xml:"svg"`
 	Width               int         `xml:"width,attr"`
 	Height              int         `xml:"height,attr"`
@@ -21,20 +26,74 @@ type hamicon struct {
 	XMLNSSVG            string      `xml:"xmlns:svg,attr"`
 	Seed                int64       `xml:"seed,attr"`
 	Style               interface{} `xml:"style"`
-	Children            []interface{}
+	Icon                group
+}
+
+type randomizable struct {
+	body struct {
+		rx, ry int
+		color  string
+	}
+	legs struct {
+		length, y int
+	}
+	eyes struct {
+		r1 int // 3 [2,6]
+		h1 int // 35 [34,36]
+		r2 int // 3 [2,6]
+		h2 int // 35 [34,36]
+		w  int // 4 [2,6]
+	}
+	glasses int // none, round, square
+}
+
+func newRandomizable(seed int64) (r randomizable) {
+	rnd := rand.New(rand.NewSource(seed))
+	// body options
+	r.body.rx = randint(rnd, -3, 0)
+	r.body.ry = randint(rnd, -5, 5)
+	r.body.color = randcolor(rnd)
+	// leg options
+	r.legs.length = randint(rnd, -2, 5)
+	if r.body.ry > 0 && r.legs.length <= 0 {
+		r.legs.length = 2
+	}
+	if r.body.ry < 0 {
+		r.legs.y = -3
+	}
+	// eyes options
+	r.eyes.r1 = randint(rnd, 0, 2)
+	r.eyes.h1 = randint(rnd, -1, 1)
+	r.eyes.r2 = randint(rnd, 0, 2)
+	r.eyes.h2 = randint(rnd, -1, 1)
+	r.eyes.w = randint(rnd, -2, 2)
+	// glasses options
+	r.glasses = randint(rnd, 0, 2)
+	// ears options
+
+	// mouth options
+
+	// nose options
+	return
 }
 
 type options struct {
-	seed int64
+	seed  int64
+	scale int
+	blank bool
 }
 
 func newIcon(opt options) (h hamicon) {
+	opt.scale = 4
 	/*
 	  TODO: build all randomizable variables out of options
 	*/
 	h.Seed = opt.seed
-	h.Width = 100
-	h.Height = 100
+	h.Width = 100 * max(opt.scale, 1)
+	h.Height = 100 * max(opt.scale, 1)
+	if opt.scale > 0 {
+		h.Icon.svg.Transform = optionalSVGAttr(fmt.Sprintf("scale(%d)", opt.scale))
+	}
 	h.PreserveAspectRatio = "xMidYMid meet"
 	h.XMLNS = "http://www.w3.org/2000/svg"
 	h.XMLNSSVG = "http://www.w3.org/2000/svg"
@@ -42,71 +101,41 @@ func newIcon(opt options) (h hamicon) {
 		Type string `xml:"type,attr"`
 		CSS  string `xml:",cdata"`
 	}{"text/css", basicCSS}
+	h.svg.Stroke = "#000"
+	h.svg.StrokeWidth = "2"
+	h.svg.FillOpacity = "1"
+	var r randomizable
+	if !opt.blank {
+		r = newRandomizable(opt.seed)
+	}
 	Legs :=
-		/*
-		  <g id="legs" class="walk" style="stroke:#000;stroke-width:2;stroke-linecap:round;">
-		    <path id="bleg1" d="M30,75 l0,10"/>
-		    <path id="bleg2" d="M35,75 l0,10"/>
-		    <path id="fleg1" d="M65,75 l0,10"/>
-		    <path id="fleg2" d="M70,75 l0,10"/>
-		  </g>
-		*/
-		group{svg: svg{ID: "legs", Style: "stroke:#000;stroke-width:2;stroke-linecap:round;"}, Children: []interface{}{
-			path{svg: svg{ID: "bleg1"}}.moveAbs(30, 75).vert(10),
-			path{svg: svg{ID: "bleg2"}}.moveAbs(35, 75).vert(10),
-			path{svg: svg{ID: "fleg1"}}.moveAbs(65, 75).vert(10),
-			path{svg: svg{ID: "fleg2"}}.moveAbs(70, 75).vert(10),
+		// TODO prove this stays within the bounds 100x100
+		group{svg: svg{ID: "legs", Class: "walk"}, Children: []interface{}{
+			path{svg: svg{ID: "bleg1"}}.moveAbs(30, 75+r.legs.y).line(int(float64(10+r.legs.length)*math.Sin(math.Pi/18)), int(float64(13+r.legs.length)*math.Cos(math.Pi/18))),
+			path{svg: svg{ID: "bleg2"}}.moveAbs(35, 75+r.legs.y).line(int(float64(10+r.legs.length)*math.Sin(-math.Pi/18)), int(float64(13+r.legs.length)*math.Cos(-math.Pi/18))),
+			path{svg: svg{ID: "fleg1"}}.moveAbs(65, 75+r.legs.y).line(int(float64(10+r.legs.length)*math.Sin(math.Pi/18)), int(float64(13+r.legs.length)*math.Cos(math.Pi/18))),
+			path{svg: svg{ID: "fleg2"}}.moveAbs(70, 75+r.legs.y).line(int(float64(10+r.legs.length)*math.Sin(-math.Pi/18)), int(float64(13+r.legs.length)*math.Cos(-math.Pi/18))),
 		}}
 	Body :=
-		/*
-		   <g style="fill-opacity:1;stroke:#000;stroke-width:2;fill:#fff;">
-		     <ellipse id="body" cx="50" cy="50" rx="45" ry="30"/>
-		   </g>
-		*/
-		group{svg: svg{ID: "body", Style: "fill-opacity:1;stroke:#000;stroke-width:2;fill:#fff;"}, Children: []interface{}{
-			ellipse{CX: 50, CY: 50, RX: 45, RY: 30},
+		group{svg: svg{ID: "body", Fill: optionalSVGAttr(r.body.color)}, Children: []interface{}{
+			ellipse{CX: 50, CY: 50, RX: 45 + r.body.rx, RY: 30 + r.body.ry},
 		}}
 	Ears :=
-		/*
-		   <g id="ears" class="twitch" style="stroke:#000;stroke-width:1;fill:#fff;">
-		     <path id="ear1" d="M53,28 a5,3 25 0,0 -6,7 z"/>
-		     <path id="ear2" d="M75,28 a5,3 -25 0,1 6,7 z"/>
-		   </g>
-		*/
 		group{svg: svg{ID: "ears", Class: "twitch", Style: "stroke:#000;stroke-width:1;fill:#fff;"}, Children: []interface{}{
 			path{svg: svg{ID: "ear1"}}.moveAbs(53, 28).arc(5, 3, 25, 0, 0, -6, 7).close(),
 			path{svg: svg{ID: "ear2"}}.moveAbs(75, 28).arc(5, 3, -25, 0, 1, 6, 7).close(),
 		}}
 	Eyes :=
-		/*
-		   <g id="eyes" style="stroke:#000;stroke-width:2;fill:#fff;">
-		     <ellipse class="blink" id="eye1" cx="60" cy="35" rx="3" ry="3"/>
-		     <ellipse class="blink" id="eye2" cx="70" cy="35" rx="3" ry="3"/>
-		   </g>
-		*/
 		group{svg: svg{ID: "eyes", Style: "stroke:#000;stroke-width:2;fill:#fff;"}, Children: []interface{}{
-			ellipse{svg: svg{ID: "eye1"}, CX: 60, CY: 35, RX: 3, RY: 3},
-			ellipse{svg: svg{ID: "eye2"}, CX: 70, CY: 35, RX: 3, RY: 3},
+			ellipse{svg: svg{ID: "eye1"}, CX: 60 - r.eyes.r1 - r.eyes.w/2, CY: 35 + r.eyes.h1, RX: 3 + r.eyes.r1, RY: 3 + r.eyes.r1},
+			ellipse{svg: svg{ID: "eye2"}, CX: 70 + r.eyes.r2 + r.eyes.w/2, CY: 35 + r.eyes.h2, RX: 3 + r.eyes.r2, RY: 3 + r.eyes.r1},
 		}}
 	Nose :=
-		/*
-		   <g id="nose" class="wiggle" style="stroke:#000;stroke-width:1;fill:pink;">
-		     <path d="M65,50 l-2,-5 l5,0 Z"/>
-		   </g>
-		*/
 		group{svg: svg{ID: "nose", Class: "wiggle", Style: "stroke:#000;stroke-width:1;fill:pink;"}, Children: []interface{}{
 			path{}.moveAbs(65, 50).line(-2, -5).line(5, 0).close(),
 		}}
 	Mouth :=
-		/*
-		   <g id="mouth" style="stroke:#000;stroke-width:1;fill-opacity:0;">
-		     <path id="lip1" d="M65,50 a6,5 0 0,1 -10,0"/>
-		     <path id="lip2" d="M65,50 a6,5 0 0,0 10,0"/>
-		     <path id="cheek1" class="swell" d="M48,45 a5,5 180 0,0 0,10"/>
-		     <path id="cheek2" class="swell" d="M82,45 a5,5 180 0,1 0,10"/>
-		     <ellipse id="speaker" class="talk" cx="65" cy="54" rx="5" ry="3" style="fill:#000;fill-opacity:1;"/>
-		   </g>
-		*/
+		// TODO split into cheeks and lips and mouth
 		group{svg: svg{ID: "mouth", Style: "stroke:#000;stroke-width:1;fill-opacity:0;"}, Children: []interface{}{
 			path{svg: svg{ID: "lip1"}}.moveAbs(65, 50).arc(6, 5, 0, 0, 1, -10, 0),
 			path{svg: svg{ID: "lip2"}}.moveAbs(65, 50).arc(6, 5, 0, 0, 0, 10, 0),
@@ -114,6 +143,34 @@ func newIcon(opt options) (h hamicon) {
 			path{svg: svg{ID: "cheek2"}}.moveAbs(82, 45).arc(5, 5, 0, 0, 1, 0, 10),
 			ellipse{svg: svg{ID: "speaker", Class: "talk", Style: "fill:#000;fill-opacity:1;"}, CX: 65, CY: 54, RX: 5, RY: 3},
 		}}
-	h.Children = []interface{}{Legs, Body, Ears, Eyes, Nose, Mouth}
+	h.Icon.Children = []interface{}{Legs, Body, Ears, Eyes, Nose, Mouth}
+	// optional attachments
+	if r.glasses > 0 {
+		gr := 5 + max(r.eyes.r1, r.eyes.r2)
+		gy := (35 + r.eyes.h1 + 35 + r.eyes.h2) / 2
+		gx1 := 60 - r.eyes.r1 - r.eyes.w/2
+		gx2 := 70 + r.eyes.r1 + r.eyes.w/2
+		if gr > (gx2-gx1)/2 {
+			gx1, gx2 = gx1-gr+(gx2-gx1)/2, gx2+gr-(gx2-gx1)/2
+		}
+		glasses := group{svg: svg{ID: "glasses", FillOpacity: "0"}, Children: []interface{}{
+			path{}.moveAbs(gx1+gr, gy).horiz(gx2 - gx1 - 2*gr),
+			path{}.moveAbs(gx1-gr, gy).line(-8, 6),
+			path{}.moveAbs(gx2+gr, gy).line(8, 6),
+		}}
+		if r.glasses == 1 {
+			glasses.Children = append(glasses.Children, []interface{}{
+				circle{CX: gx1, CY: gy, R: gr},
+				circle{CX: gx2, CY: gy, R: gr},
+			})
+		}
+		if r.glasses == 2 {
+			glasses.Children = append(glasses.Children, []interface{}{
+				path{}.moveAbs(gx1-gr, gy-gr).vert(2 * gr).horiz(2 * gr).vert(-2 * gr).close(),
+				path{}.moveAbs(gx2-gr, gy-gr).vert(2 * gr).horiz(2 * gr).vert(-2 * gr).close(),
+			})
+		}
+		h.Icon.Children = append(h.Icon.Children, glasses)
+	}
 	return
 }

@@ -72,27 +72,16 @@
 }
 #legs > path {
   transform-origin: 0% 0%;
-}
-#bleg1 {
-  transform: rotate(10deg);
+  stroke-linecap: round;
 }
 #legs.walk #bleg1 {
   animation: walk 1s ease infinite reverse;
 }
-#bleg2 {
-  transform: rotate(-10deg);
-}
 #legs.walk #bleg2 {
   animation: walk 1s ease 0.35s infinite;
 }
-#fleg1 {
-  transform: rotate(10deg);
-}
 #legs.walk #fleg1 {
   animation: walk 1s ease 0.3s infinite reverse;
-}
-#fleg2 {
-  transform: rotate(-10deg);
 }
 #legs.walk #fleg2 {
   animation: walk 1s ease 0.65s infinite;

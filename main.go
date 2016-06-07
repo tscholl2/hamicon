@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/xml"
 	"fmt"
 	"math/rand"
@@ -32,12 +33,14 @@ func headers(h http.Handler) http.Handler {
 }
 
 func main() {
-	enc := xml.NewEncoder(os.Stdout)
-	enc.Indent("  ", "  ")
+	buf := &bytes.Buffer{}
+	enc := xml.NewEncoder(buf)
+	enc.Indent("", "  ")
 	v := newIcon(options{})
 	if err := enc.Encode(v); err != nil {
 		fmt.Printf("error: %v\n", err)
 	}
+	fmt.Fprint(os.Stdout, minimize(string(buf.Bytes())))
 	/*
 		http.HandleFunc("/", get)
 		http.HandleFunc("/blank", blank)

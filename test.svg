@@ -1,5 +1,5 @@
-  <svg width="100" height="100" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" seed="0">
-    <style type="text/css"><![CDATA[/* eyes */
+<svg fill-opacity="1" stroke="#000" stroke-width="2" transform="scale(4)" width="400" height="400" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" seed="0">
+  <style type="text/css"><![CDATA[/* eyes */
 @keyframes blink {
   50% {
     ry: 0.1
@@ -73,6 +73,7 @@
 }
 #legs > path {
   transform-origin: 0% 0%;
+  stroke-linecap: round;
 }
 #bleg1 {
   transform: rotate(10deg);
@@ -97,32 +98,40 @@
 }
 #legs.walk #fleg2 {
   animation: walk 1s ease 0.65s infinite;
-}]]></style>
-    <g id="legs" style="stroke:#000;stroke-width:2;stroke-linecap:round;">
-      <path id="bleg1" d="M30,75v10"></path>
-      <path id="bleg2" d="M35,75v10"></path>
-      <path id="fleg1" d="M65,75v10"></path>
-      <path id="fleg2" d="M70,75v10"></path>
-    </g>
-    <g id="body" style="fill-opacity:1;stroke:#000;stroke-width:2;fill:#fff;">
-      <ellipse cx="50" cy="50" rx="45" ry="30"></ellipse>
-    </g>
-    <g id="ears" class="twitch" style="stroke:#000;stroke-width:1;fill:#fff;">
-      <path id="ear1" d="M53,28a5,3 25 0,0 -6,7z"></path>
-      <path id="ear2" d="M75,28a5,3 -25 0,1 6,7z"></path>
-    </g>
-    <g id="eyes" style="stroke:#000;stroke-width:2;fill:#fff;">
-      <ellipse id="eye1" cx="60" cy="35" rx="3" ry="3"></ellipse>
-      <ellipse id="eye2" cx="70" cy="35" rx="3" ry="3"></ellipse>
-    </g>
-    <g id="nose" class="wiggle" style="stroke:#000;stroke-width:1;fill:pink;">
-      <path d="M65,50l-2,-5l5,0z"></path>
-    </g>
-    <g id="mouth" style="stroke:#000;stroke-width:1;fill-opacity:0;">
-      <path id="lip1" d="M65,50a6,5 0 0,1 -10,0"></path>
-      <path id="lip2" d="M65,50a6,5 0 0,0 10,0"></path>
-      <path id="cheek1" d="M45,45a5,5 0 0,0 0,10"></path>
-      <path id="cheek2" d="M82,45a5,5 0 0,1 0,10"></path>
-      <ellipse id="speaker" class="talk" style="fill:#000;fill-opacity:1;" cx="65" cy="54" rx="5" ry="3"></ellipse>
-    </g>
-  </svg>
+}
+]]></style>
+  <g id="legs">
+    <path id="bleg1" d="M30,72l7,1"/>
+    <path id="bleg2" d="M35,72l7,-1"/>
+    <path id="fleg1" d="M65,72l7,1"/>
+    <path id="fleg2" d="M70,72l7,-1"/>
+  </g>
+  <g id="body" fill="#9ab">
+    <ellipse cx="50" cy="50" rx="44" ry="28"/>
+  </g>
+  <g id="ears" class="twitch" style="stroke:#000;stroke-width:1;fill:#fff;">
+    <path id="ear1" d="M53,28a5,3 25 0,0 -6,7z"/>
+    <path id="ear2" d="M75,28a5,3 -25 0,1 6,7z"/>
+  </g>
+  <g id="eyes" style="stroke:#000;stroke-width:2;fill:#fff;">
+    <ellipse id="eye1" cx="59" cy="36" rx="4" ry="4"/>
+    <ellipse id="eye2" cx="70" cy="34" rx="3" ry="4"/>
+  </g>
+  <g id="nose" class="wiggle" style="stroke:#000;stroke-width:1;fill:pink;">
+    <path d="M65,50l-2,-5l5,0z"/>
+  </g>
+  <g id="mouth" style="stroke:#000;stroke-width:1;fill-opacity:0;">
+    <path id="lip1" d="M65,50a6,5 0 0,1 -10,0"/>
+    <path id="lip2" d="M65,50a6,5 0 0,0 10,0"/>
+    <path id="cheek1" d="M45,45a5,5 0 0,0 0,10"/>
+    <path id="cheek2" d="M82,45a5,5 0 0,1 0,10"/>
+    <ellipse id="speaker" class="talk" style="fill:#000;fill-opacity:1;" cx="65" cy="54" rx="5" ry="3"/>
+  </g>
+  <g id="glasses" fill-opacity="0">
+    <path d="M65,35h0"/>
+    <path d="M53,35l-8,6"/>
+    <path d="M77,35l8,6"/>
+    <path d="M53,29v12h12v-12z"/>
+    <path d="M65,29v12h12v-12z"/>
+  </g>
+</svg>
