@@ -4,7 +4,10 @@
     ry: 0.1
   }
 }
-.blink {
+.blink > #eye1 {
+  animation: blink 2s infinite;
+}
+.blink > #eye2 {
   animation: blink 2s infinite;
 }
 /* mouth */
@@ -31,11 +34,11 @@
 }
 #cheek1 {
   transition: all 0.2s;
-  transform-origin: right center;
+  transform-origin: 100% 50%;
 }
 #cheek2 {
   transition: all 0.2s;
-  transform-origin: left center;
+  transform-origin: 0% 50%;
 }
 /* nose */
 @keyframes wiggle {
@@ -58,6 +61,11 @@
 #nose {
   transform-origin: center bottom;
 }
+/* ears */
+#ears.twitch > path {
+  animation: wiggle 0.5s linear infinite;
+  transform-origin: 50% 50%;
+}
 /* legs */
 @keyframes walk {
   0% {
@@ -72,7 +80,6 @@
 }
 #legs > path {
   transform-origin: 0% 0%;
-  stroke-linecap: round;
 }
 #legs.walk #bleg1 {
   animation: walk 1s ease infinite reverse;

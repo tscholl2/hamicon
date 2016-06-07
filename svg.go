@@ -30,18 +30,18 @@ type group struct {
 type ellipse struct {
 	svg
 	XMLName xml.Name `xml:"ellipse"`
-	CX      int      `xml:"cx,attr"`
-	CY      int      `xml:"cy,attr"`
-	RX      int      `xml:"rx,attr"`
-	RY      int      `xml:"ry,attr"`
+	CX      float64  `xml:"cx,attr"`
+	CY      float64  `xml:"cy,attr"`
+	RX      float64  `xml:"rx,attr"`
+	RY      float64  `xml:"ry,attr"`
 }
 
 type circle struct {
 	svg
 	XMLName xml.Name `xml:"circle"`
-	CX      int      `xml:"cx,attr"`
-	CY      int      `xml:"cy,attr"`
-	R       int      `xml:"r,attr"`
+	CX      float64  `xml:"cx,attr"`
+	CY      float64  `xml:"cy,attr"`
+	R       float64  `xml:"r,attr"`
 }
 
 type path struct {
@@ -50,32 +50,32 @@ type path struct {
 	D       string   `xml:"d,attr"`
 }
 
-func (p path) moveAbs(x, y int) path {
-	p.D += fmt.Sprintf("M%d,%d", x, y)
+func (p path) moveAbs(x, y float64) path {
+	p.D += fmt.Sprintf("M%.1f,%.1f", x, y)
 	return p
 }
-func (p path) line(x, y int) path {
-	p.D += fmt.Sprintf("l%d,%d", x, y)
+func (p path) line(x, y float64) path {
+	p.D += fmt.Sprintf("l%.1f,%.1f", x, y)
 	return p
 }
-func (p path) lineAbs(x, y int) path {
-	p.D += fmt.Sprintf("L%d,%d", x, y)
+func (p path) lineAbs(x, y float64) path {
+	p.D += fmt.Sprintf("L%.1f,%.1f", x, y)
 	return p
 }
-func (p path) vert(y int) path {
-	p.D += fmt.Sprintf("v%d", y)
+func (p path) vert(y float64) path {
+	p.D += fmt.Sprintf("v%.1f", y)
 	return p
 }
-func (p path) horiz(x int) path {
-	p.D += fmt.Sprintf("h%d", x)
+func (p path) horiz(x float64) path {
+	p.D += fmt.Sprintf("h%.1f", x)
 	return p
 }
-func (p path) arc(rx, ry, xAxisRotate, largeArcFlag, sweepFlag, x, y int) path {
-	p.D += fmt.Sprintf("a%d,%d %d %d,%d %d,%d", rx, ry, xAxisRotate, largeArcFlag, sweepFlag, x, y)
+func (p path) arc(rx, ry, xAxisRotate, largeArcFlag, sweepFlag, x, y float64) path {
+	p.D += fmt.Sprintf("a%.1f,%.1f %.1f %.1f,%.1f %.1f,%.1f", rx, ry, xAxisRotate, largeArcFlag, sweepFlag, x, y)
 	return p
 }
-func (p path) arcAbs(rx, ry, xAxisRotate, largeArcFlag, sweepFlag, x, y int) path {
-	p.D += fmt.Sprintf("A%d,%d %d %d,%d %d,%d", rx, ry, xAxisRotate, largeArcFlag, sweepFlag, x, y)
+func (p path) arcAbs(rx, ry, xAxisRotate, largeArcFlag, sweepFlag, x, y float64) path {
+	p.D += fmt.Sprintf("A%.1f,%.1f %.1f %.1f,%.1f %.1f,%.1f", rx, ry, xAxisRotate, largeArcFlag, sweepFlag, x, y)
 	return p
 }
 func (p path) close() path {
@@ -98,6 +98,7 @@ func minimize(s string) string {
 	s = strings.Replace(s, "></path>", "/>", -1)
 	s = strings.Replace(s, "></ellipse>", "/>", -1)
 	s = strings.Replace(s, "></circle>", "/>", -1)
+	s = strings.Replace(s, ".0", "", -1)
 	// TODO: remove unnec whitespace?
 	return s
 }

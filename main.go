@@ -5,11 +5,36 @@ import (
 	"encoding/xml"
 	"fmt"
 	"net/http"
-	"os"
 )
 
 func blank(w http.ResponseWriter, r *http.Request) {
-	// TODO
+	buf := &bytes.Buffer{}
+	enc := xml.NewEncoder(buf)
+	enc.Indent("", "  ")
+	v := newIcon(options{seed: 1, scale: 4, blank: true})
+	if err := enc.Encode(v); err != nil {
+		fmt.Printf("error: %v\n", err)
+	}
+	fmt.Fprint(w, minimize(string(buf.Bytes())))
+}
+
+func get(w http.ResponseWriter, r *http.Request) {
+	buf := &bytes.Buffer{}
+	enc := xml.NewEncoder(buf)
+	enc.Indent("", "  ")
+	v := newIcon(options{seed: 1, scale: 4})
+	if err := enc.Encode(v); err != nil {
+		fmt.Printf("error: %v\n", err)
+	}
+	fmt.Fprint(w, minimize(string(buf.Bytes())))
+	/*
+		enc := xml.NewEncoder(w)
+		enc.Indent("", "")
+		v := newIcon(options{seed: rand.Int63()})
+		if err := enc.Encode(v); err != nil {
+			fmt.Fprintf(w, "error: %v\n", err)
+		}
+	*/
 }
 
 func headers(h http.Handler) http.Handler {
@@ -20,18 +45,8 @@ func headers(h http.Handler) http.Handler {
 }
 
 func main() {
-	buf := &bytes.Buffer{}
-	enc := xml.NewEncoder(buf)
-	enc.Indent("", "  ")
-	v := newIcon(options{seed: 1, blank: true})
-	if err := enc.Encode(v); err != nil {
-		fmt.Printf("error: %v\n", err)
-	}
-	fmt.Fprint(os.Stdout, minimize(string(buf.Bytes())))
-	/*
-		http.HandleFunc("/", get)
-		http.HandleFunc("/blank", blank)
-		fmt.Println("listening on :8080")
-		http.ListenAndServe(":8080", headers(http.DefaultServeMux))
-	*/
+	http.HandleFunc("/", get)
+	http.HandleFunc("/blank", blank)
+	fmt.Println("listening on :8080")
+	http.ListenAndServe(":8080", headers(http.DefaultServeMux))
 }
