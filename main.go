@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/xml"
 	"fmt"
+	"math/rand"
 	"net/http"
 )
 
@@ -11,7 +12,7 @@ func blank(w http.ResponseWriter, r *http.Request) {
 	buf := &bytes.Buffer{}
 	enc := xml.NewEncoder(buf)
 	enc.Indent("", "  ")
-	v := newIcon(options{seed: 1, scale: 4, blank: true})
+	v := newIcon(options{scale: 4, blank: true})
 	if err := enc.Encode(v); err != nil {
 		fmt.Printf("error: %v\n", err)
 	}
@@ -22,7 +23,7 @@ func get(w http.ResponseWriter, r *http.Request) {
 	buf := &bytes.Buffer{}
 	enc := xml.NewEncoder(buf)
 	enc.Indent("", "  ")
-	v := newIcon(options{seed: 1, scale: 4})
+	v := newIcon(options{seed: rand.Int63(), scale: 4})
 	if err := enc.Encode(v); err != nil {
 		fmt.Printf("error: %v\n", err)
 	}

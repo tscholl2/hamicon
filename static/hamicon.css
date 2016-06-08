@@ -29,15 +29,13 @@
   transform-origin: 50% 50%;
 }
 /* cheeks */
-.swell {
+.swell > path {
   animation: scaler 3s infinite;
 }
 #cheek1 {
-  transition: all 0.2s;
   transform-origin: 100% 50%;
 }
 #cheek2 {
-  transition: all 0.2s;
   transform-origin: 0% 50%;
 }
 /* nose */
