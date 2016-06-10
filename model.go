@@ -33,14 +33,15 @@ type wigglable struct {
 	eye2R, eye2CX, eye2CY float64
 	eyesW                 float64
 
-	glasses int // none, round, square
-
 	noseX, noseY          float64
 	noseLength, noseWidth float64
 
 	mouthWidth float64
 
 	cheeksRadius, cheeksInward float64
+
+	glasses int // none, round, square
+	hat     int // none, top
 }
 
 func defaults() wigglable {
@@ -55,14 +56,15 @@ func defaults() wigglable {
 		eye2R: 3, eye2CX: 70, eye2CY: 35,
 		eyesW: 0,
 
-		glasses: 0,
-
 		noseX: 65, noseY: 50,
 		noseLength: 4, noseWidth: 6,
 
 		mouthWidth: 8,
 
 		cheeksInward: 0, cheeksRadius: 5,
+
+		glasses: 0,
+		hat:     0,
 	}
 }
 
@@ -88,8 +90,6 @@ func newRandomizable(seed int64) wigglable {
 	w.eye2CY += randintf(rnd, -1, 1)
 	w.eyesW += randintf(rnd, -1, 5)
 
-	w.glasses = randint(rnd, 0, 2)
-
 	w.noseLength += randintf(rnd, -1, 1)
 	w.noseWidth += randintf(rnd, -1, 1)
 
@@ -97,6 +97,9 @@ func newRandomizable(seed int64) wigglable {
 
 	w.cheeksRadius += randintf(rnd, -4, 4)
 	w.cheeksInward += randintf(rnd, 0, 1)
+
+	w.glasses = randint(rnd, 0, 2)
+	w.hat = randint(rnd, 0, 1)
 
 	return w
 }
@@ -121,9 +124,9 @@ func newIcon(opt options) (h hamicon) {
 		Type string `xml:"type,attr"`
 		CSS  string `xml:",cdata"`
 	}{"text/css", basicCSS}
-	h.svg.Stroke = "#000"
-	h.svg.StrokeWidth = "2"
-	h.svg.FillOpacity = "1"
+	h.Icon.svg.Stroke = "#000"
+	h.Icon.svg.StrokeWidth = "2"
+	h.Icon.svg.FillOpacity = "1"
 	w := defaults()
 	if !opt.blank {
 		w = newRandomizable(opt.seed)
@@ -193,6 +196,18 @@ func newIcon(opt options) (h hamicon) {
 			})
 		}
 		h.Icon.Children = append(h.Icon.Children, glasses)
+	}
+	if w.hat > 0 {
+		hat := group{svg: svg{ID: "hat", Class: "tip"}}
+		if w.hat == 1 {
+			hat.Children = append(hat.Children, []interface{}{
+				group{svg: svg{Fill: "#000", Stroke: "#999", StrokeWidth: "1"}, Children: []interface{}{
+					rect{X: 53, Y: 3, Height: 11, Width: 18},
+					rect{X: 46, Y: 14, Height: 7, Width: 31},
+				}},
+			})
+		}
+		h.Icon.Children = append(h.Icon.Children, hat)
 	}
 	return
 }

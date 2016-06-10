@@ -91,3 +91,13 @@
 #legs.walk #fleg2 {
   animation: walk 1s ease 0.65s infinite;
 }
+/* hat */
+@keyframes tip {
+  50% {
+    transform: rotate(10deg);
+  }
+}
+#hat.tip {
+  transform-origin: 50% 100%;
+  animation: tip 1s ease infinite alternate;
+}

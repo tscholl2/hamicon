@@ -36,6 +36,15 @@ type ellipse struct {
 	RY      float64  `xml:"ry,attr"`
 }
 
+type rect struct {
+	svg
+	XMLName xml.Name `xml:"rect"`
+	X       float64  `xml:"x,attr"`
+	Y       float64  `xml:"y,attr"`
+	Height  float64  `xml:"height,attr"`
+	Width   float64  `xml:"width,attr"`
+}
+
 type circle struct {
 	svg
 	XMLName xml.Name `xml:"circle"`
@@ -98,6 +107,7 @@ func minimize(s string) string {
 	s = strings.Replace(s, "></path>", "/>", -1)
 	s = strings.Replace(s, "></ellipse>", "/>", -1)
 	s = strings.Replace(s, "></circle>", "/>", -1)
+	s = strings.Replace(s, "></rect>", "/>", -1)
 	s = strings.Replace(s, ".0", "", -1)
 	// TODO: remove unnec whitespace?
 	return s
