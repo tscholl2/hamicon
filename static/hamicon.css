@@ -1,7 +1,7 @@
 /* eyes */
 @keyframes blink {
   50% {
-    ry: 0.1
+    ry: 0.1;
   }
 }
 .blink > #eye1 {
@@ -13,13 +13,13 @@
 /* mouth */
 @keyframes scaler {
   30% {
-    transform: scale(0.4)
+    transform: scale(0.4);
   }
   50% {
-    transform: scale(0.7)
+    transform: scale(0.7);
   }
   70% {
-    transform: scale(0.5)
+    transform: scale(0.5);
   }
 }
 .talk {
@@ -28,6 +28,9 @@
 #speaker {
   transform-origin: 50% 50%;
   transform-box: fill-box;
+}
+.talk > #speaker {
+  display: block;
 }
 /* cheeks */
 .swell > path {
@@ -44,16 +47,16 @@
 /* nose */
 @keyframes wiggle {
   0% {
-    transform: rotate(0deg)
+    transform: rotate(0deg);
   }
   25% {
-    transform: rotate(10deg)
+    transform: rotate(10deg);
   }
   75% {
-    transform: rotate(-10deg)
+    transform: rotate(-10deg);
   }
   100% {
-    transform: rotate(0deg)
+    transform: rotate(0deg);
   }
 }
 .wiggle {
@@ -72,13 +75,13 @@
 /* legs */
 @keyframes walk {
   0% {
-    transform: rotate(-10deg)
+    transform: rotate(-10deg);
   }
   50% {
-    transform: rotate(20deg)
+    transform: rotate(20deg);
   }
   100% {
-    transform: rotate(-10deg)
+    transform: rotate(-10deg);
   }
 }
 #legs > path {

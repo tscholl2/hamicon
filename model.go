@@ -105,9 +105,11 @@ func newRandomizable(seed int64) wigglable {
 }
 
 type options struct {
-	seed  int64
-	scale int
-	blank bool
+	seed       int64
+	scale      int
+	blank      bool
+	classes    bool
+	includeCSS bool
 }
 
 func newIcon(opt options) (h hamicon) {
@@ -120,10 +122,14 @@ func newIcon(opt options) (h hamicon) {
 	h.PreserveAspectRatio = "xMidYMid meet"
 	h.XMLNS = "http://www.w3.org/2000/svg"
 	h.XMLNSSVG = "http://www.w3.org/2000/svg"
-	h.Style = struct {
-		Type string `xml:"type,attr"`
-		CSS  string `xml:",cdata"`
-	}{"text/css", basicCSS}
+
+	if opt.includeCSS {
+		h.Style = struct {
+			Type string `xml:"type,attr"`
+			CSS  string `xml:",cdata"`
+		}{"text/css", basicCSS}
+	}
+
 	h.Icon.svg.Stroke = "#000"
 	h.Icon.svg.StrokeWidth = "2"
 	h.Icon.svg.FillOpacity = "1"
@@ -133,7 +139,7 @@ func newIcon(opt options) (h hamicon) {
 	}
 	Legs :=
 		// TODO prove this stays within the bounds 100x100
-		group{svg: svg{ID: "legs", Class: "walk", StrokeLinecap: "round"}, Children: []interface{}{
+		group{svg: svg{ID: "legs", StrokeLinecap: "round"}, Children: []interface{}{
 			path{svg: svg{ID: "bleg1"}}.moveAbs(w.leg1X, w.legsY).line(w.legsLength*math.Sin(-math.Pi/18), w.legsLength*math.Cos(math.Pi/18)),
 			path{svg: svg{ID: "bleg2"}}.moveAbs(w.leg2X, w.legsY).line(w.legsLength*math.Sin(math.Pi/18), w.legsLength*math.Cos(-math.Pi/18)),
 			path{svg: svg{ID: "fleg1"}}.moveAbs(w.leg3X, w.legsY).line(w.legsLength*math.Sin(-math.Pi/18), w.legsLength*math.Cos(math.Pi/18)),
@@ -144,30 +150,38 @@ func newIcon(opt options) (h hamicon) {
 			ellipse{CX: w.bodyCX, CY: w.bodyCY, RX: w.bodyRX, RY: w.bodyRY},
 		}}
 	Ears :=
-		group{svg: svg{ID: "ears", Class: "twitch", Fill: w.bodyColor, StrokeWidth: "1"}, Children: []interface{}{
+		group{svg: svg{ID: "ears", Fill: w.bodyColor, StrokeWidth: "1"}, Children: []interface{}{
 			path{svg: svg{ID: "ear1"}}.moveAbs(53, 28).arc(5, 3, 25, 0, 0, -6, 7).close(),
 			path{svg: svg{ID: "ear2"}}.moveAbs(75, 28).arc(5, 3, -25, 0, 1, 6, 7).close(),
 		}}
 	Eyes :=
-		group{svg: svg{ID: "eyes", Class: "blink", Fill: "#fff", StrokeWidth: "1"}, Children: []interface{}{
+		group{svg: svg{ID: "eyes", Fill: "#fff", StrokeWidth: "1"}, Children: []interface{}{
 			ellipse{svg: svg{ID: "eye1"}, CX: w.eye1CX - w.eyesW/2, CY: w.eye1CY, RX: w.eye1R, RY: w.eye1R},
 			ellipse{svg: svg{ID: "eye2"}, CX: w.eye2CX + w.eyesW/2, CY: w.eye2CY, RX: w.eye2R, RY: w.eye2R},
 		}}
 	Nose :=
-		group{svg: svg{ID: "nose", Class: "wiggle", Fill: "pink", StrokeWidth: "1"}, Children: []interface{}{
+		group{svg: svg{ID: "nose", Fill: "pink", StrokeWidth: "1"}, Children: []interface{}{
 			path{}.moveAbs(65, 50).line(-w.noseWidth/2, -w.noseLength).horiz(w.noseWidth).close(),
 		}}
 	Mouth :=
 		group{svg: svg{ID: "mouth", StrokeWidth: "1", FillOpacity: "0"}, Children: []interface{}{
 			path{svg: svg{ID: "lip1"}}.moveAbs(w.noseX, w.noseY).arc(w.mouthWidth/2, w.mouthWidth/2-2, 0, 0, 1, -w.mouthWidth, 0),
 			path{svg: svg{ID: "lip2"}}.moveAbs(w.noseX, w.noseY).arc(w.mouthWidth/2, w.mouthWidth/2-2, 0, 0, 0, w.mouthWidth, 0),
-			ellipse{svg: svg{ID: "speaker", Class: "talk", Fill: "#000", FillOpacity: "1"}, CX: w.noseX, CY: w.noseY + 3, RX: 5, RY: 3},
+			ellipse{svg: svg{ID: "speaker", Style: "display:none;", Fill: "#000", FillOpacity: "1"}, CX: w.noseX, CY: w.noseY + 3, RX: 5, RY: 3},
 		}}
 	Cheeks :=
-		group{svg: svg{ID: "cheeks", Class: "swell", StrokeWidth: "1", FillOpacity: "0"}, Children: []interface{}{
+		group{svg: svg{ID: "cheeks", StrokeWidth: "1", FillOpacity: "0"}, Children: []interface{}{
 			path{svg: svg{ID: "cheek1"}}.moveAbs(w.noseX-w.cheeksRadius-w.mouthWidth-2, w.noseY-w.cheeksRadius).arc(w.cheeksRadius, w.cheeksRadius, 0, 0, w.cheeksInward, 0, 2*w.cheeksRadius),
 			path{svg: svg{ID: "cheek2"}}.moveAbs(w.noseX+w.cheeksRadius+w.mouthWidth+2, w.noseY-w.cheeksRadius).arc(w.cheeksRadius, w.cheeksRadius, 0, 0, 1-w.cheeksInward, 0, 2*w.cheeksRadius),
 		}}
+	if opt.classes {
+		Legs.Class = "walk"
+		Ears.Class = "twitch"
+		Eyes.Class = "blink"
+		Nose.Class = "wiggle"
+		Mouth.Class = "talk"
+		Cheeks.Class = "swell"
+	}
 	h.Icon.Children = []interface{}{Legs, Body, Ears, Eyes, Nose, Mouth, Cheeks}
 	// optional attachments
 	if w.glasses > 0 {

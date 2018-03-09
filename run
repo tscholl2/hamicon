@@ -1,1 +1,1 @@
-go generate && go build && ./hamicon
+go build && ./hamicon

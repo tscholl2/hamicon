@@ -2,52 +2,47 @@ package main
 
 import (
 	"bytes"
+	"compress/gzip"
 	"encoding/xml"
 	"fmt"
 	"math/rand"
 	"net/http"
+
+	"github.com/pkg/errors"
 )
 
 func blank(w http.ResponseWriter, r *http.Request) {
-	buf := &bytes.Buffer{}
-	enc := xml.NewEncoder(buf)
-	enc.Indent("", "  ")
-	v := newIcon(options{scale: 4, blank: true})
-	if err := enc.Encode(v); err != nil {
-		fmt.Printf("error: %v\n", err)
+	icon := newIcon(options{scale: 4, blank: true})
+	if err := writeXML(w, icon); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
-	fmt.Fprint(w, minimize(string(buf.Bytes())))
 }
 
 func get(w http.ResponseWriter, r *http.Request) {
-	buf := &bytes.Buffer{}
-	enc := xml.NewEncoder(buf)
-	enc.Indent("", "  ")
-	v := newIcon(options{seed: rand.Int63(), scale: 4})
-	if err := enc.Encode(v); err != nil {
-		fmt.Printf("error: %v\n", err)
+	icon := newIcon(options{seed: rand.Int63(), scale: 4})
+	if err := writeXML(w, icon); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
-	fmt.Fprint(w, minimize(string(buf.Bytes())))
-	/*
-		enc := xml.NewEncoder(w)
-		enc.Indent("", "")
-		v := newIcon(options{seed: rand.Int63()})
-		if err := enc.Encode(v); err != nil {
-			fmt.Fprintf(w, "error: %v\n", err)
-		}
-	*/
 }
 
-func headers(h http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "image/svg+xml")
-		h.ServeHTTP(w, r)
-	})
+func writeXML(w http.ResponseWriter, v interface{}) error {
+	w.Header().Set("Content-Type", "image/svg+xml;charset=utf-8")
+	w.Header().Set("content-encoding", "gzip")
+	W := gzip.NewWriter(w)
+	defer W.Close()
+	buf := &bytes.Buffer{}
+	encoder := xml.NewEncoder(buf)
+	encoder.Indent("", "  ")
+	if err := encoder.Encode(v); err != nil {
+		return errors.Wrapf(err, "unable to encode")
+	}
+	_, err := fmt.Fprint(W, minimize(string(buf.Bytes())))
+	return errors.Wrapf(err, "unable to write")
 }
 
 func main() {
 	http.HandleFunc("/", get)
 	http.HandleFunc("/blank", blank)
 	fmt.Println("listening on :8080")
-	http.ListenAndServe(":8080", headers(http.DefaultServeMux))
+	http.ListenAndServe(":8080", http.DefaultServeMux)
 }
