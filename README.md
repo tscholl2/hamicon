@@ -13,11 +13,11 @@ So you can have them wiggle their nose by adding the `.wiggle` class to the `#no
 
 ## Examples
 
-![example 1](examples/example1.svg)
+![hamicon example 1](examples/example1.svg)
 
-![example 2](examples/example2.svg)
+![hamicon example 2](examples/example2.svg)
 
-![example 3](examples/example3.svg)
+![hamicon example 3](examples/example3.svg)
 
 ## Notes
 
