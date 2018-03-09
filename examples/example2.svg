@@ -1,0 +1,143 @@
+<svg width="400" height="400" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" seed="6129484611666145821">
+  <style type="text/css"><![CDATA[/* eyes */
+@keyframes blink {
+  50% {
+    ry: 0.1
+  }
+}
+.blink > #eye1 {
+  animation: blink 2s infinite;
+}
+.blink > #eye2 {
+  animation: blink 2s infinite;
+}
+/* mouth */
+@keyframes scaler {
+  30% {
+    transform: scale(0.4)
+  }
+  50% {
+    transform: scale(0.7)
+  }
+  70% {
+    transform: scale(0.5)
+  }
+}
+.talk {
+  animation: scaler 1s infinite alternate;
+}
+#speaker {
+  transform-origin: 50% 50%;
+  transform-box: fill-box;
+}
+/* cheeks */
+.swell > path {
+  animation: scaler 3s infinite;
+}
+#cheek1 {
+  transform-origin: 100% 50%;
+  transform-box: fill-box;
+}
+#cheek2 {
+  transform-origin: 0% 50%;
+  transform-box: fill-box;
+}
+/* nose */
+@keyframes wiggle {
+  0% {
+    transform: rotate(0deg)
+  }
+  25% {
+    transform: rotate(10deg)
+  }
+  75% {
+    transform: rotate(-10deg)
+  }
+  100% {
+    transform: rotate(0deg)
+  }
+}
+.wiggle {
+  animation: wiggle 1s linear infinite;
+}
+#nose {
+  transform-origin: center bottom;
+  transform-box: fill-box;
+}
+/* ears */
+#ears.twitch > path {
+  animation: wiggle 0.5s linear infinite;
+  transform-origin: 50% 50%;
+  transform-box: fill-box;
+}
+/* legs */
+@keyframes walk {
+  0% {
+    transform: rotate(-10deg)
+  }
+  50% {
+    transform: rotate(20deg)
+  }
+  100% {
+    transform: rotate(-10deg)
+  }
+}
+#legs > path {
+  transform-origin: 0% 0%;
+  transform-box: fill-box;
+}
+#legs.walk #bleg1 {
+  animation: walk 1s ease infinite reverse;
+}
+#legs.walk #bleg2 {
+  animation: walk 1s ease 0.35s infinite;
+}
+#legs.walk #fleg1 {
+  animation: walk 1s ease 0.3s infinite reverse;
+}
+#legs.walk #fleg2 {
+  animation: walk 1s ease 0.65s infinite;
+}
+/* hat */
+@keyframes tip {
+  50% {
+    transform: rotate(10deg);
+  }
+}
+#hat.tip {
+  transform-origin: 50% 100%;
+  transform-box: fill-box;
+  animation: tip 1s ease infinite alternate;
+}]]></style>
+  <g fill-opacity="1" stroke="#000" stroke-width="2" transform="scale(4)">
+    <g id="legs" class="walk" stroke-linecap="round">
+      <path id="bleg1" d="M30,72l-1.7,9.8"/>
+      <path id="bleg2" d="M35,72l1.7,9.8"/>
+      <path id="fleg1" d="M65,72l-1.7,9.8"/>
+      <path id="fleg2" d="M70,72l1.7,9.8"/>
+    </g>
+    <g id="body" fill="#f21">
+      <ellipse cx="50" cy="50" rx="42" ry="25"/>
+    </g>
+    <g id="ears" class="twitch" fill="#f21" stroke-width="1">
+      <path id="ear1" d="M53,28a5,3 25 0,0 -6,7z"/>
+      <path id="ear2" d="M75,28a5,3 -25 0,1 6,7z"/>
+    </g>
+    <g id="eyes" class="blink" fill="#fff" stroke-width="1">
+      <ellipse id="eye1" cx="59" cy="35" rx="4" ry="4"/>
+      <ellipse id="eye2" cx="71" cy="34" rx="4" ry="4"/>
+    </g>
+    <g id="nose" class="wiggle" fill="pink" stroke-width="1">
+      <path d="M65,50l-2.5,-4h5z"/>
+    </g>
+    <g id="mouth" fill-opacity="0" stroke-width="1">
+      <path id="lip1" d="M65,50a4,2 0 0,1 -8,0"/>
+      <path id="lip2" d="M65,50a4,2 0 0,0 8,0"/>
+      <ellipse id="speaker" class="talk" fill="#000" fill-opacity="1" cx="65" cy="53" rx="5" ry="3"/>
+    </g>
+    <g id="cheeks" class="swell" fill-opacity="0" stroke-width="1">
+      <path id="cheek1" d="M50,45a5,5 0 0,1 0,10"/>
+      <path id="cheek2" d="M80,45a5,5 0 0,0 0,10"/>
+    </g>
+  </g>
+</svg>
