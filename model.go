@@ -75,7 +75,7 @@ func newRandomizable(seed int64) wigglable {
 	w.bodyRY += randintf(rnd, -5, 5)
 	w.bodyColor = optionalSVGAttr(randcolor(rnd))
 
-	w.legsLength += randintf(rnd, -2, 5)
+	w.legsLength += randintf(rnd, -1, 6)
 	if w.bodyRY > 0 && defaults().legsLength < w.legsLength {
 		w.legsLength = defaults().legsLength + 2
 	}
